@@ -1,0 +1,20 @@
+{
+	"name": "nelson/puppeteer",
+	"require": {
+		"php": "^7.1",
+		"symfony/process": "^4.3",
+		"nette/utils": "^2.4 || ^3.0",
+		"nette/http": "^2.4 || ^3.0",
+		"nette/di": "^2.4"
+	},
+	"require-dev": {
+		"nette/tester": "^2.0",
+		"phpstan/phpstan-shim": "^0.11.12",
+		"phpstan/phpstan-nette": "^0.11.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"Nelson\\Puppeteer\\": "src/"
+		}
+	}
+}
