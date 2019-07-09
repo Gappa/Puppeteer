@@ -52,6 +52,9 @@ final class Generator
 	/** @var string|null */
 	private $tempFileName;
 
+	/** @var array */
+	private $output = [];
+
 
 	public function __construct(GeneratorConfig $generatorConfig)
 	{
@@ -64,26 +67,27 @@ final class Generator
 	}
 
 
-	public function generateFromHtml(string $html, int $mode): string
+	public function generateFromHtml(string $html, int $mode): array
 	{
 		$htmlFilePath = $this->getTempFilePath('html');
 		FileSystem::write($htmlFilePath, $html);
 
 		$this->setOption('--inputMode', 'file');
 		$this->setOption('--input', $htmlFilePath);
+		$this->generate($mode);
 
-		$output = $this->generate($mode);
 		FileSystem::delete($htmlFilePath);
 
-		return $output;
+		return $this->output;
 	}
 
 
-	public function generateFromUrl(UrlScript $url, int $mode): string
+	public function generateFromUrl(UrlScript $url, int $mode): array
 	{
 		$this->setOption('--inputMode', 'url');
 		$this->setOption('--input', (string)$url);
-		return $this->generate($mode);
+		$this->generate($mode);
+		return $this->output;
 	}
 
 
@@ -129,7 +133,7 @@ final class Generator
 	}
 
 
-	private function generate(int $mode): string
+	private function generate(int $mode): void
 	{
 		if ($this->preset) {
 			$this->setOptions($this->preset->getOptions());
@@ -137,14 +141,14 @@ final class Generator
 
 		switch ($mode) {
 			case self::GENERATE_PDF:
-				$this->setOption('--pdf');
+				$this->outputPdf();
 				break;
 			case self::GENERATE_IMAGE:
-				$this->setOption('--image');
+				$this->outputImage();
 				break;
 			case self::GENERATE_BOTH:
-				$this->setOption('--pdf');
-				$this->setOption('--image');
+				$this->outputPdf();
+				$this->outputImage();
 				break;
 			default:
 				throw new Exception('Mode ' . $mode . ' is not defined.');
@@ -157,6 +161,7 @@ final class Generator
 			$env = $_ENV + ['CHROME_DEVEL_SANDBOX' => $this->sandbox];
 		} else {
 			$env = $_ENV;
+			$this->setOption('--no-sandbox');
 		}
 
 		$process = new Process(
@@ -173,13 +178,24 @@ final class Generator
 			throw new ProcessFailedException($process);
 		}
 
-
-		dump($this->getCommand());
-		dump($process->getOutput());
-		exit;
-
-		return $this->getTempFilePath();
+		$this->output['command'] = $this->getCommand();
+		$this->output['console'] = $process->getOutput();
 	}
+
+
+	private function outputPdf(): void
+	{
+		$this->setOption('--pdf');
+		$this->output['pdf'] = $this->getTempFilePath() . '.pdf';
+	}
+
+
+	private function outputImage(): void
+	{
+		$this->setOption('--image');
+		$this->output['image'] = $this->getTempFilePath() . '.png';
+	}
+
 
 
 	private function getCommand(): array

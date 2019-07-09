@@ -7,6 +7,11 @@ class Generator
 		this.args = args;
 		this.outputPdf = false;
 		this.outputImage = false;
+		this.browserArgs = [
+			'--disable-gpu',
+			'--hide-scrollbars',
+			// '--disable-setuid-sandbox',
+		];
 
 		// console.log(args);
 		// return;
@@ -34,6 +39,10 @@ class Generator
 
 		if (this.isset(this.args.image)) {
 			this.outputImage = true;
+		}
+
+		if (this.isset(this.args.sandbox) && this.args.sandbox === false) {
+			this.browserArgs.push('--no-sandbox');
 		}
 	}
 
@@ -99,12 +108,7 @@ class Generator
 	{
 		const browser = await puppeteer.launch({
 			headless: true,
-			args: [
-				'--disable-gpu',
-				'--hide-scrollbars',
-				// '--no-sandbox',
-				// '--disable-setuid-sandbox',
-			],
+			args: this.browserArgs,
 		});
 
 		const page = await browser.newPage();
