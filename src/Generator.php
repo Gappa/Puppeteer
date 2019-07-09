@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace Nelson\Puppeteer;
 
 use Exception;
+use Nelson\Puppeteer\Presets\APreset;
 use Nette\Http\UrlScript;
 use Nette\SmartObject;
 use Nette\Utils\FileSystem;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use Nelson\Puppeteer\Presets\APreset;
 
 
 interface IGeneratorFactory
@@ -62,7 +62,7 @@ final class Generator
 		$this->sandbox = $generatorConfig->getSandbox();
 		$this->timeout = $generatorConfig->getTimeout();
 		$this->masterCommand = [
-			$generatorConfig->getNodeCommand() => __DIR__ . '/assets/generator.js'
+			$generatorConfig->getNodeCommand() => __DIR__ . '/assets/generator.js',
 		];
 	}
 
@@ -85,7 +85,7 @@ final class Generator
 	public function generateFromUrl(UrlScript $url, int $mode): array
 	{
 		$this->setOption('--inputMode', 'url');
-		$this->setOption('--input', (string)$url);
+		$this->setOption('--input', (string) $url);
 		$this->generate($mode);
 		return $this->output;
 	}
@@ -114,7 +114,7 @@ final class Generator
 	private function getTempFileName(): string
 	{
 		if (empty($this->tempFileName)) {
-			$this->tempFileName = time() . '_-_' . md5((string)mt_rand());
+			$this->tempFileName = time() . '_-_' . md5((string) mt_rand());
 		}
 
 		return $this->tempFileName;
@@ -195,7 +195,6 @@ final class Generator
 		$this->setOption('--image');
 		$this->output['image'] = $this->getTempFilePath() . '.png';
 	}
-
 
 
 	private function getCommand(): array

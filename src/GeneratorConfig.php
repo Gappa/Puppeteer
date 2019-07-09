@@ -41,5 +41,4 @@ final class GeneratorConfig
 	{
 		return $this->config['sandbox'];
 	}
-
 }

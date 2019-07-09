@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Nelson\Puppeteer\DI;
 
-use Nette\DI\CompilerExtension;
 use Nelson\Puppeteer\GeneratorConfig;
 use Nelson\Puppeteer\IGeneratorFactory;
+use Nette\DI\CompilerExtension;
 
 final class Extension extends CompilerExtension
 {
