@@ -22,6 +22,8 @@
 		nodeCommand: 'node' # in case multiple versions are installed
 	```
 	
+	These are the default values.
+	
 ## Sandbox
 
 Using sandbox is highly encouraged (by Puppeteer team).
