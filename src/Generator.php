@@ -173,9 +173,10 @@ final class Generator
 			throw new ProcessFailedException($process);
 		}
 
-		// debug
-		// dump($process->getOutput());
-		// exit;
+
+		dump($this->getCommand());
+		dump($process->getOutput());
+		exit;
 
 		return $this->getTempFilePath();
 	}

@@ -152,6 +152,9 @@ class Generator
 const puppeteer = require('puppeteer');
 const argv = require('minimist')(process.argv.slice(2));
 const fs = require('fs');
-
 const generator = new Generator(argv);
-generator.generate();
+
+generator.generate().catch((e) => {
+	console.log(e);
+});
+
