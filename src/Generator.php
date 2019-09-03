@@ -67,6 +67,12 @@ final class Generator
 	}
 
 
+	/**
+	 * @param string $html
+	 * @param int $mode
+	 * @return array
+	 * @throws Exception
+	 */
 	public function generateFromHtml(string $html, int $mode): array
 	{
 		$htmlFilePath = $this->getTempFilePath('html');
@@ -82,6 +88,12 @@ final class Generator
 	}
 
 
+	/**
+	 * @param UrlScript $url
+	 * @param int $mode
+	 * @return array
+	 * @throws Exception
+	 */
 	public function generateFromUrl(UrlScript $url, int $mode): array
 	{
 		$this->setOption('--inputMode', 'url');
@@ -180,6 +192,8 @@ final class Generator
 
 		$this->output['command'] = $this->getCommand();
 		$this->output['console'] = $process->getOutput();
+
+		$process->stop();
 	}
 
 
