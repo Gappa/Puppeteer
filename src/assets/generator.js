@@ -32,9 +32,10 @@ class Generator
 				printBackground: true,
 				// scale: 0.9,
 				// preferCSSPageSize: true,
-			}
+			};
 			this.setPageFormat();
 			this.setPageDimensions();
+			this.setLandscape();
 		}
 
 		if (this.isset(this.args.image)) {
@@ -100,6 +101,14 @@ class Generator
 		) {
 			this.pageParameters['width'] = this.args.pageWidth + 'mm';
 			this.pageParameters['height'] = this.args.pageHeight + 'mm';
+		}
+	}
+
+
+	setLandscape()
+	{
+		if (this.isset(this.args.landscape)) {
+			this.pageParameters['landscape'] = true;
 		}
 	}
 
