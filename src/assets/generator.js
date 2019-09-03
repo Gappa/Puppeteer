@@ -126,7 +126,7 @@ class Generator
 		// Set url/content
 		switch (this.args.inputMode) {
 			case 'file':
-				page.setContent(fs.readFileSync(this.args.input, 'utf8'));
+				await page.setContent(fs.readFileSync(this.args.input, 'utf8'));
 				break;
 
 			case 'url':
