@@ -31,17 +31,20 @@ final class Generator
 	/** @var int */
 	public const GENERATE_BOTH = 3;
 
+	/** @var string */
+	public const SCRIPT_PATH = __DIR__ . '/assets/generator.js';
+
 	/** @var int */
 	private $timeout;
 
 	/** @var string */
 	private $tempDir;
 
-	/** @var string[] */
-	private $options = [];
+	/** @var string */
+	private $nodeCommand;
 
 	/** @var string[] */
-	private $masterCommand = [];
+	private $options = [];
 
 	/** @var string|null */
 	private $sandbox;
@@ -60,7 +63,7 @@ final class Generator
 	 * 	image: ?string,
 	 * }
 	 */
-	private $output = [];
+	private $output;
 
 
 	public function __construct(GeneratorConfig $generatorConfig)
@@ -68,9 +71,7 @@ final class Generator
 		$this->tempDir = $generatorConfig->getTempDir();
 		$this->sandbox = $generatorConfig->getSandbox();
 		$this->timeout = $generatorConfig->getTimeout();
-		$this->masterCommand = [
-			$generatorConfig->getNodeCommand() => __DIR__ . '/assets/generator.js',
-		];
+		$this->nodeCommand = $generatorConfig->getNodeCommand();
 	}
 
 
@@ -230,6 +231,9 @@ final class Generator
 	}
 
 
+	/**
+	 * @return array<string>
+	 */
 	private function getCommand(): array
 	{
 		$command = [];
@@ -242,10 +246,7 @@ final class Generator
 			}
 		}
 
-		array_unshift($command,
-			array_keys($this->masterCommand)[0],
-			array_values($this->masterCommand)[0]
-		);
+		array_unshift($command, $this->nodeCommand, self::SCRIPT_PATH);
 
 		return $command;
 	}
