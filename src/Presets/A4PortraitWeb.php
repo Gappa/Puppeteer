@@ -9,8 +9,8 @@ final class A4PortraitWeb extends APreset
 	{
 		$this->options = [
 			'--pageFormat' => 'A4',
-			'--viewportWidth' => 794,
-			'--viewportHeight' => 1122,
+			'--viewportWidth' => '794',
+			'--viewportHeight' => '1122',
 		];
 	}
 }

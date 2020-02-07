@@ -9,10 +9,25 @@ final class GeneratorConfig
 {
 	use SmartObject;
 
-	/** @var array */
+	/**
+	 * @var array{
+	 * 	tempDir: string,
+	 * 	timeout: int,
+	 * 	sandbox: ?string,
+	 * 	nodeCommand: string
+	 * }
+	 */
 	private $config;
 
 
+	/**
+	 * @param array{
+	 * 	tempDir: string,
+	 * 	timeout: int,
+	 * 	sandbox: ?string,
+	 * 	nodeCommand: string
+	 * } $config
+	 */
 	public function setup(array $config): void
 	{
 		$this->config = $config;

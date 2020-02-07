@@ -37,11 +37,11 @@ final class Generator
 	/** @var string */
 	private $tempDir;
 
-	/** @var array */
+	/** @var string[] */
 	private $options = [];
 
-	/** @var array */
-	private $masterCommand;
+	/** @var string[] */
+	private $masterCommand = [];
 
 	/** @var string|null */
 	private $sandbox;
@@ -52,7 +52,14 @@ final class Generator
 	/** @var string|null */
 	private $tempFileName;
 
-	/** @var array */
+	/**
+	 * @var array{
+	 * 	command: string[],
+	 * 	console: string,
+	 * 	pdf: ?string,
+	 * 	image: ?string,
+	 * }
+	 */
 	private $output = [];
 
 
@@ -70,7 +77,12 @@ final class Generator
 	/**
 	 * @param string $html
 	 * @param int $mode
-	 * @return array
+	 * @return array{
+	 * 	command: string[],
+	 * 	console: string,
+	 * 	pdf: ?string,
+	 * 	image: ?string,
+	 * }
 	 * @throws Exception
 	 */
 	public function generateFromHtml(string $html, int $mode): array
@@ -91,7 +103,12 @@ final class Generator
 	/**
 	 * @param UrlScript $url
 	 * @param int $mode
-	 * @return array
+	 * @return array{
+	 * 	command: string[],
+	 * 	console: string,
+	 * 	pdf: ?string,
+	 * 	image: ?string,
+	 * }
 	 * @throws Exception
 	 */
 	public function generateFromUrl(UrlScript $url, int $mode): array
@@ -103,7 +120,7 @@ final class Generator
 	}
 
 
-	public function setPreset(?APreset $preset)
+	public function setPreset(?APreset $preset): void
 	{
 		$this->preset = $preset;
 	}
@@ -115,6 +132,9 @@ final class Generator
 	}
 
 
+	/**
+	 * @param string[] $options
+	 */
 	public function setOptions(array $options): void
 	{
 		foreach ($options as $name => $value) {
@@ -164,7 +184,6 @@ final class Generator
 				break;
 			default:
 				throw new Exception('Mode ' . $mode . ' is not defined.');
-				break;
 		}
 
 		$this->setOption('--output', $this->getTempFilePath());
@@ -217,9 +236,9 @@ final class Generator
 
 		foreach ($this->options as $key => $value) {
 			if (!empty($value)) {
-				$command[] = $key . '=' . $value;
+				$command[] = (string) ($key . '=' . $value);
 			} else {
-				$command[] = $key;
+				$command[] = (string) $key;
 			}
 		}
 

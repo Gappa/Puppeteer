@@ -16,10 +16,10 @@ final class A4PortraitPrint extends APreset
 	public function __construct()
 	{
 		$this->options = [
-			'--pageWidth' => 210 + (2 * $this->bleed),
-			'--pageHeight' => 297 + (2 * $this->bleed),
-			'--viewportWidth' => 794,
-			'--viewportHeight' => 1122,
+			'--pageWidth' => (string) (210 + (2 * $this->bleed)),
+			'--pageHeight' => (string) (297 + (2 * $this->bleed)),
+			'--viewportWidth' => '794',
+			'--viewportHeight' => '1122',
 		];
 	}
 }

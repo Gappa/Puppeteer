@@ -5,15 +5,15 @@ namespace Nelson\Puppeteer\Presets;
 
 abstract class APreset
 {
-	/** @var array */
+	/** @var string[] */
 	protected $defaultOptions = [];
 
-	/** @var array */
+	/** @var string[] */
 	protected $options = [];
 
 
 	/**
-	 * Array of merged options
+	 * @return string[]
 	 */
 	public function getOptions(): array
 	{
