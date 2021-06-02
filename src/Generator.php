@@ -11,13 +11,6 @@ use Nette\Utils\FileSystem;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-
-interface IGeneratorFactory
-{
-	public function create(): Generator;
-}
-
-
 final class Generator
 {
 	use SmartObject;
