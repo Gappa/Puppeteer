@@ -27,7 +27,7 @@ final class Generator
 	/** @var string */
 	public const SCRIPT_PATH = __DIR__ . '/assets/generator.js';
 
-	/** @var string[] */
+	/** @var array<string|null> */
 	private array $options = [];
 
 	private int $timeout;
@@ -115,9 +115,7 @@ final class Generator
 	}
 
 
-	/**
-	 * @param string[] $options
-	 */
+	/** @param array<string|null> $options */
 	public function setOptions(array $options): void
 	{
 		foreach ($options as $name => $value) {

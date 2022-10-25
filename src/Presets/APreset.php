@@ -12,9 +12,7 @@ abstract class APreset
 	protected array $options = [];
 
 
-	/**
-	 * @return string[]
-	 */
+	/** @return array<string|null> */
 	public function getOptions(): array
 	{
 		return array_merge($this->defaultOptions, $this->options);
