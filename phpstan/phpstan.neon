@@ -1,8 +1,7 @@
 parameters:
-	autoload_directories:
-		- ../src/
+	tmpDir: %currentWorkingDirectory%/temp/phpstan/
 
 	paths:
-		- ../src/
+		- %currentWorkingDirectory%/src/
 
 	level: 7
