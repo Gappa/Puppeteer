@@ -17,7 +17,7 @@ final class GeneratorConfig
 	 * 	nodeCommand: string
 	 * }
 	 */
-	private $config;
+	private array $config;
 
 
 	/**

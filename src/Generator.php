@@ -27,26 +27,15 @@ final class Generator
 	/** @var string */
 	public const SCRIPT_PATH = __DIR__ . '/assets/generator.js';
 
-	/** @var int */
-	private $timeout;
-
-	/** @var string */
-	private $tempDir;
-
-	/** @var string */
-	private $nodeCommand;
-
 	/** @var string[] */
-	private $options = [];
+	private array $options = [];
 
-	/** @var string|null */
-	private $sandbox;
-
-	/** @var APreset|null */
-	private $preset;
-
-	/** @var string|null */
-	private $tempFileName;
+	private int $timeout;
+	private string $tempDir;
+	private string $nodeCommand;
+	private ?string $sandbox = null;
+	private ?APreset $preset = null;
+	private ?string $tempFileName = null;
 
 	/**
 	 * @var array{
@@ -56,7 +45,7 @@ final class Generator
 	 * 	image: ?string,
 	 * }
 	 */
-	private $output;
+	private array $output;
 
 
 	public function __construct(GeneratorConfig $generatorConfig)

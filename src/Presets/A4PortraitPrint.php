@@ -6,11 +6,8 @@ namespace Nelson\Puppeteer\Presets;
 final class A4PortraitPrint extends APreset
 {
 
-	/**
-	 * Margin bleed, in mm
-	 * @var int
-	 */
-	private $bleed = 5;
+	/** Margin bleed, in mm */
+	private int $bleed = 5;
 
 
 	public function __construct()

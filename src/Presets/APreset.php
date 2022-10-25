@@ -6,10 +6,10 @@ namespace Nelson\Puppeteer\Presets;
 abstract class APreset
 {
 	/** @var array<string|null> */
-	protected $defaultOptions = [];
+	protected array $defaultOptions = [];
 
 	/** @var array<string|null> */
-	protected $options = [];
+	protected array $options = [];
 
 
 	/**
