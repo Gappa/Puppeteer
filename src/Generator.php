@@ -126,7 +126,7 @@ final class Generator
 
 	private function getTempFileName(): string
 	{
-		if (empty($this->tempFileName)) {
+		if ($this->tempFileName === null || trim($this->tempFileName) === '') {
 			$this->tempFileName = time() . '_-_' . md5((string) mt_rand());
 		}
 
@@ -136,10 +136,15 @@ final class Generator
 
 	private function getTempFilePath(?string $suffix = null): string
 	{
+		$suffix = match(true) {
+			is_null($suffix), trim($suffix) === '' => '',
+			default => $suffix,
+		};
+
 		$parts = [
 			$this->tempDir,
 			$this->getTempFileName(),
-			!empty($suffix) ? '.' . $suffix : '',
+			$suffix,
 		];
 
 		return implode('', $parts);
@@ -148,7 +153,7 @@ final class Generator
 
 	private function generate(int $mode): void
 	{
-		if ($this->preset) {
+		if ($this->preset !== null) {
 			$this->setOptions($this->preset->getOptions());
 		}
 
@@ -169,7 +174,7 @@ final class Generator
 
 		$this->setOption('--output', $this->getTempFilePath());
 
-		if ($this->sandbox) {
+		if ($this->sandbox !== null) {
 			$env = $_ENV + ['CHROME_DEVEL_SANDBOX' => $this->sandbox];
 		} else {
 			$env = $_ENV;
@@ -211,19 +216,16 @@ final class Generator
 	}
 
 
-	/**
-	 * @return array<string>
-	 */
+	/** @return array<int, string> */
 	private function getCommand(): array
 	{
 		$command = [];
 
 		foreach ($this->options as $key => $value) {
-			if (!empty($value)) {
-				$command[] = (string) ($key . '=' . $value);
-			} else {
-				$command[] = (string) $key;
-			}
+			$command[] = match(true) {
+				is_null($value), trim($value) === '' => (string) $key,
+				default => $key . '=' . $value,
+			};
 		}
 
 		array_unshift($command, $this->nodeCommand, self::SCRIPT_PATH);
