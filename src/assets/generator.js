@@ -153,7 +153,6 @@ class Generator
 		}
 
 		if (this.outputPdf) {
-			await page.emulateMedia('screen');
 			await page.pdf(this.pageParameters);
 		}
 
