@@ -19,9 +19,6 @@
 			"Nelson\\Puppeteer\\": "src/"
 		}
 	},
-	"scripts": {
-		"phpstan": "@php ./vendor/bin/phpstan analyse --configuration ./phpstan/phpstan.neon --memory-limit 512M"
-	},
 	"config": {
 		"allow-plugins": {
 			"phpstan/extension-installer": true
