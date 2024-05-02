@@ -11,7 +11,7 @@ use Nette\DI\Helpers;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
 
-final class Extension extends CompilerExtension
+final class PuppeteerExtension extends CompilerExtension
 {
 
 	public function getConfigSchema(): Schema
@@ -21,6 +21,8 @@ final class Extension extends CompilerExtension
 			'timeout' => Expect::int()->default(120)->min(10)->max(999),
 			'sandbox' => Expect::string()->nullable()->default(null),
 			'nodeCommand' => Expect::string()->default('node'),
+			'user' => Expect::string()->nullable()->default(null),
+			'pass' => Expect::string()->nullable()->default(null),
 		]);
 	}
 
