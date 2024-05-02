@@ -10,7 +10,6 @@ class Generator
 		this.browserArgs = [
 			'--disable-gpu',
 			'--hide-scrollbars',
-			// '--disable-setuid-sandbox',
 		];
 
 		// console.log(args);
