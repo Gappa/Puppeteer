@@ -21,8 +21,8 @@ final class PuppeteerExtension extends CompilerExtension
 			'timeout' => Expect::int()->default(120)->min(10)->max(999),
 			'sandbox' => Expect::string()->nullable()->default(null),
 			'nodeCommand' => Expect::string()->default('node'),
-			'user' => Expect::string()->nullable()->default(null),
-			'pass' => Expect::string()->nullable()->default(null),
+			'httpUser' => Expect::string()->nullable()->default(null),
+			'httpPass' => Expect::string()->nullable()->default(null),
 		]);
 	}
 

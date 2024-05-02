@@ -63,10 +63,10 @@ class Generator
 
 	getHttpAuth()
 	{
-		if (this.isset(this.args.httpUsername) && this.isset(this.args.httpPassword)) {
+		if (this.isset(this.args.httpUser) && this.isset(this.args.httpPass)) {
 			return {
-				username: this.args.httpUsername, // stable
-				password: this.args.httpPassword, // N6t6lk6
+				username: this.args.httpUser,
+				password: this.args.httpPass,
 			};
 		}
 	}
@@ -120,6 +120,19 @@ class Generator
 		});
 
 		const page = await browser.newPage();
+
+		if (this.httpAuth) {
+			// console.log(this.httpAuth);
+
+			// await page.authenticate(this.httpAuth); // this for some reason doesn't work
+
+			const auth = new Buffer(`${this.httpAuth.username}:${this.httpAuth.password}`).toString('base64');
+			await page.setExtraHTTPHeaders({
+				'Authorization': `Basic ${auth}`
+			});
+			// page.on('request', request => console.log(`Request: ${request.resourceType}: ${request.url} (${JSON.stringify(request.headers)})`));
+		}
+
 		await page.setDefaultNavigationTimeout(0);
 		await page.setDefaultTimeout(0);
 
@@ -127,9 +140,6 @@ class Generator
 			await page.setViewport(this.viewport);
 		}
 
-		if (this.httpAuth) {
-			await page.authenticate(this.httpAuth);
-		}
 
 		// Set url/content
 		switch (this.args.inputMode) {

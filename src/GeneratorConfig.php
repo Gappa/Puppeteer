@@ -5,29 +5,25 @@ namespace Nelson\Puppeteer;
 
 use Nette\SmartObject;
 
+/**
+ * @phpstan-type ConfigArray array{
+ * 	tempDir: string,
+ *		timeout: int,
+ *		sandbox: ?string,
+ *		nodeCommand: string,
+ *    httpUser: ?string,
+ *    httpPass: ?string,
+ *	}
+ */
 final class GeneratorConfig
 {
 	use SmartObject;
 
-	/**
-	 * @var array{
-	 * 	tempDir: string,
-	 * 	timeout: int,
-	 * 	sandbox: ?string,
-	 * 	nodeCommand: string
-	 * }
-	 */
+	/** @var ConfigArray */
 	private array $config;
 
 
-	/**
-	 * @param array{
-	 * 	tempDir: string,
-	 * 	timeout: int,
-	 * 	sandbox: ?string,
-	 * 	nodeCommand: string
-	 * } $config
-	 */
+	/** @param ConfigArray $config */
 	public function setup(array $config): void
 	{
 		$this->config = $config;
@@ -55,5 +51,17 @@ final class GeneratorConfig
 	public function getSandbox(): ?string
 	{
 		return $this->config['sandbox'];
+	}
+
+
+	public function getHttpUser(): ?string
+	{
+		return $this->config['httpUser'];
+	}
+
+
+	public function getHttpPass(): ?string
+	{
+		return $this->config['httpPass'];
 	}
 }

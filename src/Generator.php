@@ -11,21 +11,22 @@ use Nette\Utils\FileSystem;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+/**
+ * @phpstan-type OutputArray array{
+ * 	command: string[],
+ * 	console: string,
+ * 	pdf: ?string,
+ * 	image: ?string,
+ *	 }
+ */
 final class Generator
 {
 	use SmartObject;
 
-	/** @var int */
-	public const GENERATE_PDF = 1;
-
-	/** @var int */
-	public const GENERATE_IMAGE = 2;
-
-	/** @var int */
-	public const GENERATE_BOTH = 3;
-
-	/** @var string */
-	public const SCRIPT_PATH = __DIR__ . '/assets/generator.js';
+	public const int GENERATE_PDF = 1;
+	public const int GENERATE_IMAGE = 2;
+	public const int GENERATE_BOTH = 3;
+	public const string SCRIPT_PATH = __DIR__ . '/assets/generator.js';
 
 	/** @var array<string|null> */
 	private array $options = [];
@@ -36,15 +37,10 @@ final class Generator
 	private ?string $sandbox = null;
 	private ?APreset $preset = null;
 	private ?string $tempFileName = null;
+	private ?string $httpUser = null;
+	private ?string $httpPass = null;
 
-	/**
-	 * @var array{
-	 * 	command: string[],
-	 * 	console: string,
-	 * 	pdf: ?string,
-	 * 	image: ?string,
-	 * }
-	 */
+	/** @var OutputArray */
 	private array $output;
 
 
@@ -53,6 +49,8 @@ final class Generator
 		$this->tempDir = $generatorConfig->getTempDir();
 		$this->sandbox = $generatorConfig->getSandbox();
 		$this->timeout = $generatorConfig->getTimeout();
+		$this->httpUser = $generatorConfig->getHttpUser();
+		$this->httpPass = $generatorConfig->getHttpPass();
 		$this->nodeCommand = $generatorConfig->getNodeCommand();
 	}
 
@@ -60,12 +58,7 @@ final class Generator
 	/**
 	 * @param string $html
 	 * @param int $mode
-	 * @return array{
-	 * 	command: string[],
-	 * 	console: string,
-	 * 	pdf: ?string,
-	 * 	image: ?string,
-	 * }
+	 * @return OutputArray
 	 * @throws Exception
 	 */
 	public function generateFromHtml(string $html, int $mode): array
@@ -86,12 +79,7 @@ final class Generator
 	/**
 	 * @param UrlScript $url
 	 * @param int $mode
-	 * @return array{
-	 * 	command: string[],
-	 * 	console: string,
-	 * 	pdf: ?string,
-	 * 	image: ?string,
-	 * }
+	 * @return OutputArray
 	 * @throws Exception
 	 */
 	public function generateFromUrl(UrlScript $url, int $mode): array
@@ -173,6 +161,9 @@ final class Generator
 		}
 
 		$this->setOption('--output', $this->getTempFilePath());
+
+		$this->setOption('--httpUser', $this->httpUser);
+		$this->setOption('--httpPass', $this->httpPass);
 
 		if ($this->sandbox !== null) {
 			$env = $_ENV + ['CHROME_DEVEL_SANDBOX' => $this->sandbox];
