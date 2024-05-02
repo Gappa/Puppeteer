@@ -162,6 +162,7 @@ class Generator
 		}
 
 		if (this.outputPdf) {
+			await page.emulateMediaType('screen');
 			await page.pdf(this.pageParameters);
 		}
 
