@@ -63,7 +63,7 @@ final class Generator
 	 */
 	public function generateFromHtml(string $html, int $mode): array
 	{
-		$htmlFilePath = $this->getTempFilePath('html');
+		$htmlFilePath = $this->getTempFilePath('.html');
 		FileSystem::write($htmlFilePath, $html);
 
 		$this->setOption('--inputMode', 'file');
