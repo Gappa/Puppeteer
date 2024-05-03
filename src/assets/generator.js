@@ -30,7 +30,7 @@ class Generator
 				margin: 0,
 				printBackground: true,
 				// scale: 0.9,
-				// preferCSSPageSize: true,
+				preferCSSPageSize: true,
 			};
 			this.setPageFormat();
 			this.setPageDimensions();
@@ -122,15 +122,15 @@ class Generator
 		const page = await browser.newPage();
 
 		if (this.httpAuth) {
-			// console.log(this.httpAuth);
-
-			// await page.authenticate(this.httpAuth); // this for some reason doesn't work
-
-			const auth = new Buffer(`${this.httpAuth.username}:${this.httpAuth.password}`).toString('base64');
-			await page.setExtraHTTPHeaders({
-				'Authorization': `Basic ${auth}`
-			});
-			// page.on('request', request => console.log(`Request: ${request.resourceType}: ${request.url} (${JSON.stringify(request.headers)})`));
+			if (this.args.inputMode === 'file') {
+				const auth = Buffer.from(`${this.httpAuth.username}:${this.httpAuth.password}`).toString('base64');
+				await page.setExtraHTTPHeaders({
+					'Authorization': `Basic ${auth}`
+				});
+				// page.on('request', request => console.log(`Request: ${request.resourceType}: ${request.url} (${JSON.stringify(request.headers)})`));
+			} else if (this.args.inputMode === 'url') {
+				await page.authenticate(this.httpAuth);
+			}
 		}
 
 		await page.setDefaultNavigationTimeout(0);
@@ -139,7 +139,6 @@ class Generator
 		if (this.viewport) {
 			await page.setViewport(this.viewport);
 		}
-
 
 		// Set url/content
 		switch (this.args.inputMode) {
@@ -162,12 +161,12 @@ class Generator
 		}
 
 		if (this.outputPdf) {
+			await page.emulateMediaType('print');
 			await page.pdf(this.pageParameters);
 		}
 
 		await browser.close();
 	}
-
 }
 
 const puppeteer = require('puppeteer');
@@ -178,4 +177,3 @@ const generator = new Generator(argv);
 generator.generate().catch((e) => {
 	console.log(e);
 });
-
