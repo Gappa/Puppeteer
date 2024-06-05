@@ -31,6 +31,7 @@ class Generator
 				printBackground: true,
 				// scale: 0.9,
 				preferCSSPageSize: true,
+				timeout: 300_000,
 			};
 			this.setPageFormat();
 			this.setPageDimensions();
